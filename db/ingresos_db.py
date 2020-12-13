@@ -44,16 +44,17 @@ database_ingresos = {
 # C
 def createIngreso(ingreso: Ingreso):
     # ingreso  ESTO ES UNA OBJETO DE LA CLASE INGRESO
-    generator["id"] = generator["id"] + 1
+    generator["id"] = str(generator["id"] + 1)
     ingreso.id_ingreso = generator["id"]
                         # KEY            VALUE
     database_ingresos[generator["id"]] = ingreso
     return ingreso
 
 # R
-def getIngreso(ingreso: int):
+def getIngreso(ingreso: str):
     ingreso = str(ingreso)
     if ingreso in database_ingresos.keys():
+        print(database_ingresos)
         return database_ingresos[ingreso]
     else:
         return None

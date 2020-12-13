@@ -19,11 +19,11 @@ async def get_root():
 }
 
 
-@api.post("/")  # root POST
-async def post_root():
-    return {"resp" : "Ok",
-            "message": "Conectado a FastAPI con peticion POST",
-}
+# @api.post("/")  # root POST
+# async def post_root():
+#     return {"resp" : "Ok",
+#             "message": "Conectado a FastAPI con peticion POST",
+# }
 
 ## CREAMOS UN ENDPOINT CUYA FUNCIONALIDAD ES REGRESAR TODOS
 # LOS DATOS QUE ESTEN DENTRO DE LA BD DE INGRESOS

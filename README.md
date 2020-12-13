@@ -16,8 +16,16 @@
 #
 ##  Run
 
+
 >  uvicorn main:api --reload
+
 >  uvicorn main:api --reload --port 8005  "Para cambiar puerto default"
+
+
+##  Docs
+
+>  Swagger http://127.0.0.1:8000/docs
+
 
 
 
