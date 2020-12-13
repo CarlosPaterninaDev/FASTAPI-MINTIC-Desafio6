@@ -17,6 +17,7 @@
 ##  Run
 
 >  uvicorn main:api --reload
+>  uvicorn main:api --reload --port 8005  "Para cambiar puerto default"
 
 
 
