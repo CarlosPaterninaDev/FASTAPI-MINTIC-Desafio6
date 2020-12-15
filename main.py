@@ -2,6 +2,9 @@ from db.ingresos_db import createIngreso, getAllIngresos, getIngreso, updateIngr
 from models.ingresos_model import IngresoIn, IngresoOut
 from fastapi import FastAPI, HTTPException # MAGIA
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 # Instanciando la clase FASTAPI 
 ## EL OBJETO DE LLAMA api
 
@@ -9,6 +12,18 @@ from fastapi import FastAPI, HTTPException # MAGIA
 api = FastAPI()
 #     C   R   U    D
 #   POST GET PUT DELETE  Los 4 metodos de la clase FastAPI
+
+
+origins = [
+    "http://localhost.tiangolo.com", "https://localhost.tiangolo.com",
+    "http://localhost", "http://localhost:8081",
+]
+
+api.add_middleware(
+    CORSMiddleware, allow_origins=origins,
+    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+)
+
 
 
 # CREAR LOS ENDPOINTS = URI's  URL's
