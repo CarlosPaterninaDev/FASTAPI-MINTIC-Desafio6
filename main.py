@@ -1,8 +1,28 @@
 from db.ingresos_db import createIngreso, getAllIngresos, getIngreso, updateIngreso, deleteIngreso
 from models.ingresos_model import IngresoIn, IngresoOut
 from fastapi import FastAPI, HTTPException # MAGIA
-
 from fastapi.middleware.cors import CORSMiddleware
+
+# Constantes
+USUARIONOFOUND = "Usuario no encontrado"
+INGRESONOFOUND = "No se encontró ingreso"
+INGRESONOTCREATED = "No se pudo crear el ingreso"
+
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8081",
+    "http://localhost:8082",
+    "http://localhost:8081"
+]
+
+api.add_middleware(
+    CORSMiddleware, allow_origins=origins,
+    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+)
+
 
 
 # Instanciando la clase FASTAPI 
@@ -14,24 +34,12 @@ api = FastAPI()
 #   POST GET PUT DELETE  Los 4 metodos de la clase FastAPI
 
 
-origins = [
-    "http://localhost.tiangolo.com", "https://localhost.tiangolo.com",
-    "http://localhost", "http://localhost:8081",
-]
-
-api.add_middleware(
-    CORSMiddleware, allow_origins=origins,
-    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
-)
-
-
-
 # CREAR LOS ENDPOINTS = URI's  URL's
-@api.get("/")  # root
-async def get_root():
-    return {"resp" : "Ok",
-            "message": "Conectado a FastAPI",
-}
+# @api.get("/")  # root
+# async def get_root():
+#     return {"resp" : "Ok",
+#             "message": "Conectado a FastAPI",
+# }
 
 
 # @api.post("/")  # root POST
@@ -50,68 +58,84 @@ async def get_all_ingresos():
 ## Simulacion
 #  http://127.0.0.1:11111/ingreso/1
                     #  1
-@api.get("/ingreso/{ingreso}")
-async def get_ingreso(ingreso: str):
+@api.get("/ingreso/{usuario}")
+async def get_ingreso(usuario: str):
 
-    ingreso_in_db = getIngreso(ingreso)
+    usuario = usuario.lower()
+
+    ingreso_in_db = getIngreso(usuario)
+    print("ingreso_in_db")
+    print(ingreso_in_db)
 
     if ingreso_in_db == None:
-        raise HTTPException(status_code=404, detail="El Ingreso no existe")
+        raise HTTPException(status_code=404, detail=USUARIONOFOUND)
 
-
-    # ingreso_in_db = {"id_ingreso": 1,
-    #                                 "descripcion":"Nómina Febrero",
-    #                                 "valor":5000000,
-    #                                 "fecha": '2020-02-01 12:22',
-    #                                 "origen": "123456789",
-    #                                 "tipoIngreso": "Nómina",
-    #                                 }
-
-    ingreso_out = IngresoOut(**ingreso_in_db.dict())
-
-    return  ingreso_out
+    return  ingreso_in_db
 
 
 
-@api.post("/ingreso/")
+@api.post("/ingreso/{usuario}")
 
-async def create_ingreso(ingreso_in: IngresoIn):
+async def create_ingreso(usuario: str, ingreso_in: IngresoIn):
 
-    newIngreso = createIngreso(ingreso_in)  # METODO DE LA CLASE INGRESO
+    usuario = usuario.lower()
+
+    ingreso_in_db = getIngreso(usuario)
+
+    if ingreso_in_db == None:
+        raise HTTPException(status_code=404, detail=USUARIONOFOUND)
+
+    newIngreso = createIngreso(usuario, ingreso_in)  # METODO DE LA CLASE INGRESO
 
     if newIngreso == None:
-        raise HTTPException(status_code=400, detail="No se pudo crear el ingreso")
+        raise HTTPException(status_code=400, detail=INGRESONOTCREATED)
 
     return  {"message": "Ingreso registrado"}
 
 
-@api.put("/ingreso/")
-async def update_ingreso(ingreso_in: IngresoIn):
+@api.put("/ingreso/{usuario}/{id_ingreso}")
+async def update_ingreso(usuario:str, id_ingreso: int, ingreso_in: IngresoIn):
 
-    ingreso_in_db = getIngreso(ingreso_in.id_ingreso)
+    usuario = usuario.lower()
+    
+    ingreso_in_db = getIngreso(usuario)
 
     if ingreso_in_db == None:
-        raise HTTPException(status_code=404, detail="El ingreso no existe")
-    
+        raise HTTPException(status_code=404, detail=USUARIONOFOUND)
 
-    ingresoUpdated = updateIngreso(ingreso_in)
+    ingresoUpdated = updateIngreso(usuario, id_ingreso, ingreso_in)
+
+    if ingresoUpdated == None:
+        raise HTTPException(status_code=404, detail=INGRESONOFOUND)
+
+    print(ingresoUpdated)
+
+    ingresoUpdated.descripcion = ingreso_in.descripcion
+    ingresoUpdated.valor = ingreso_in.valor
+    ingresoUpdated.fecha = ingreso_in.fecha
+    ingresoUpdated.origen = ingreso_in.origen
+    ingresoUpdated.tipoIngreso = ingreso_in.tipoIngreso
 
 
     return  {"Actualizado": True, "Ingreso": ingresoUpdated}
 
 
 
-@api.delete("/ingreso/{id_ingreso}")
-async def delete_ingreso(id_ingreso: int):
+@api.delete("/ingreso/{usuario}/{id_ingreso}")
+async def delete_ingreso(usuario:str , id_ingreso: int):
 
-    ingreso_in_db = getIngreso(id_ingreso)
+    usuario = usuario.lower()
+
+    ingreso_in_db = getIngreso(usuario)
 
     if ingreso_in_db == None:
-        raise HTTPException(status_code=404, detail="El ingreso no existe")
+        raise HTTPException(status_code=404, detail=USUARIONOFOUND)
     
 
-    bd =  deleteIngreso(id_ingreso)
+    bd =  deleteIngreso(usuario, id_ingreso)
+
+    if bd == None:
+        raise HTTPException(status_code=404, detail=INGRESONOFOUND)
 
 
     return  {"Eliminado": True, "Ingresos": bd}
-
