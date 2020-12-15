@@ -18,11 +18,6 @@ origins = [
     "http://localhost:8081"
 ]
 
-api.add_middleware(
-    CORSMiddleware, allow_origins=origins,
-    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
-)
-
 
 
 # Instanciando la clase FASTAPI 
@@ -32,6 +27,12 @@ api.add_middleware(
 api = FastAPI()
 #     C   R   U    D
 #   POST GET PUT DELETE  Los 4 metodos de la clase FastAPI
+
+api.add_middleware(
+    CORSMiddleware, allow_origins=origins,
+    allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
+)
+
 
 
 # CREAR LOS ENDPOINTS = URI's  URL's
