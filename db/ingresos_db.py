@@ -16,24 +16,102 @@ class Ingreso(BaseModel):
 
 
 database_ingresos = Dict[str, Ingreso]
-generator = {"id":1}
+generator = {"id":9}
 # SIMULACION DE NUESTRA PEQUEÑA BASE DE DATOS 
 ## LA TABLA INGRESOS
 database_ingresos = {
-            "0": Ingreso(**{"id_ingreso": 0,
-                                    "descripcion":"Nómina Enero",
+            "carlos": 
+            [
+                Ingreso(**{"id_ingreso": 0,
+                                    "descripcion":"Nómina Enero Carlos",
                                     "valor":5000000,
                                     "fecha": '2020-01-01 12:22',
                                     "origen": "123456789",
                                     "tipoIngreso": "Nómina",
                                     }),
-            "1": Ingreso(**{"id_ingreso": 1,
-                                    "descripcion":"Nómina Febrero",
+                Ingreso(**{"id_ingreso": 1,
+                                    "descripcion":"Nómina Febrero Carlos",
                                     "valor":5000000,
                                     "fecha": '2020-02-01 12:22',
                                     "origen": "123456789",
                                     "tipoIngreso": "Nómina",
                                     }),
+            ],
+
+            "leo": 
+            [
+                Ingreso(**{"id_ingreso": 2,
+                                    "descripcion":"Nómina Enero Leo",
+                                    "valor":5000000,
+                                    "fecha": '2020-01-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+                Ingreso(**{"id_ingreso": 3,
+                                    "descripcion":"Nómina Febrero Leo",
+                                    "valor":5000000,
+                                    "fecha": '2020-02-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+            ]
+            ,
+
+            "lau": 
+            [
+                Ingreso(**{"id_ingreso": 4,
+                                    "descripcion":"Nómina Enero Lau",
+                                    "valor":5000000,
+                                    "fecha": '2020-01-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+                Ingreso(**{"id_ingreso": 5,
+                                    "descripcion":"Nómina Febrero Lau",
+                                    "valor":5000000,
+                                    "fecha": '2020-02-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+            ]
+
+            ,
+
+            "camilo": 
+            [
+                Ingreso(**{"id_ingreso": 6,
+                                    "descripcion":"Nómina Enero Camilo",
+                                    "valor":5000000,
+                                    "fecha": '2020-01-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+                Ingreso(**{"id_ingreso": 7,
+                                    "descripcion":"Nómina Febrero Camilo",
+                                    "valor":5000000,
+                                    "fecha": '2020-02-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+            ]
+            ,
+            "uber": 
+            [
+                Ingreso(**{"id_ingreso": 8,
+                                    "descripcion":"Nómina Enero Uber",
+                                    "valor":5000000,
+                                    "fecha": '2020-01-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+                Ingreso(**{"id_ingreso": 9,
+                                    "descripcion":"Nómina Febrero Uber",
+                                    "valor":5000000,
+                                    "fecha": '2020-02-01 12:22',
+                                    "origen": "123456789",
+                                    "tipoIngreso": "Nómina",
+                                    }),
+            ]
 }
 
 ## SIMULACION DE UN AUTO INCREMENT
@@ -42,20 +120,20 @@ database_ingresos = {
 # COMPORTAMIENTO
 
 # C
-def createIngreso(ingreso: Ingreso):
+def createIngreso(usuario:str , ingreso: Ingreso):
     # ingreso  ESTO ES UNA OBJETO DE LA CLASE INGRESO
     generator["id"] = generator["id"] + 1
     ingreso.id_ingreso = generator["id"]
-                        # KEY            VALUE
-    database_ingresos[str(generator["id"])] = ingreso
+    print(database_ingresos[usuario])                    # KEY            VALUE
+    database_ingresos[usuario].append(ingreso)
+    print(database_ingresos[usuario])
     return ingreso
 
 # R
-def getIngreso(ingreso: str):
-    ingreso = str(ingreso)
-    if ingreso in database_ingresos.keys():
-        print(database_ingresos)
-        return database_ingresos[ingreso]
+def getIngreso(usuario: str):
+
+    if usuario in database_ingresos.keys():
+        return database_ingresos[usuario]
     else:
         return None
 # R
@@ -63,17 +141,22 @@ def getAllIngresos():
         return database_ingresos
 
 # U
-def updateIngreso(ingreso_in_db: Ingreso):
+def updateIngreso(usuario: str, id_ingreso: int, ingreso_in_db: Ingreso):
 
-    database_ingresos[ingreso_in_db.id_ingreso] = ingreso_in_db
-    return ingreso_in_db
+    for value in database_ingresos[usuario]:
+        if value.id_ingreso == id_ingreso:
+            print("Encontrado")
+            return value
 
+    return None
 
 # D
-def deleteIngreso(id_ingreso: int):
+def deleteIngreso(usuario:str, id_ingreso: int):
 
-    id_ingreso = str(id_ingreso)
-
-    database_ingresos.pop(id_ingreso)
-    return database_ingresos
+    for e in range(len(database_ingresos[usuario]) - 1, -1, -1):
+        if database_ingresos[usuario][e].id_ingreso == id_ingreso:
+            database_ingresos[usuario].pop(e)
+            return database_ingresos
+    
+    return None
 
