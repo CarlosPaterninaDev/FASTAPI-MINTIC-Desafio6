@@ -38,11 +38,21 @@ api.add_middleware(
 
 
 # CREAR LOS ENDPOINTS = URI's  URL's
-# @api.get("/")  # root
-# async def get_root():
-#     return {"resp" : "Ok",
-#             "message": "Conectado a FastAPI",
-# }
+@api.get("/")  # root
+async def get_root():
+     return {"resp" : "Ok",
+             "message": "Conectado a FastAPI",
+             "origins CORS":  = [
+                            "http://localhost.tiangolo.com",
+                            "https://localhost.tiangolo.com",
+                            "http://localhost",
+                            "http://localhost:8081",
+                            "http://localhost:8082",
+                            "http://localhost:8081",
+                            "https://payday-mintic.herokuapp.com/"
+                            "https://payday-mintic.herokuapp.com/user/balance/uber"
+                                ]
+ }
 
 
 # @api.post("/")  # root POST
