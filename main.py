@@ -17,6 +17,7 @@ origins = [
     "http://localhost:8082",
     "http://localhost:8081",
     "https://payday-mintic.herokuapp.com/"
+    "https://payday-mintic.herokuapp.com/user/balance/uber"
 ]
 
 
