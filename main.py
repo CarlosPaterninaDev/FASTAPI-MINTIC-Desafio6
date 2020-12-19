@@ -1,5 +1,5 @@
-from db.ingresos_db import createIngreso, getAllIngresos, getIngreso, updateIngreso, deleteIngreso
-from models.ingresos_model import IngresoIn, IngresoOut
+from db.ingresos_db import createMovimiento, getAllMovimientos, getMovimiento, updateMovimiento, deleteMovimiento
+from models.ingresos_model import MovimientoIn, MovimientoOut
 from fastapi import FastAPI, HTTPException # MAGIA
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -20,17 +20,6 @@ origins = [
 ]
 
 
-# origins = [
-#     "http://localhost.tiangolo.com",
-#     "https://localhost.tiangolo.com",
-#     "http://localhost",
-#     "http://localhost:8081",
-#     "http://localhost:8082",
-#     "https://payday-mintic.herokuapp.com"
-#     "https://payday-mintic.herokuapp.com/user/balance/uber"
-# ]
-
-
 
 # Instanciando la clase FASTAPI 
 ## EL OBJETO DE LLAMA api
@@ -45,24 +34,6 @@ api.add_middleware(
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"],
 )
 
-
-
-# CREAR LOS ENDPOINTS = URI's  URL's
-# @api.get("/")  # root
-# async def get_root():
-#     return {"resp" : "Ok",
-#             "message": "Conectado a FastAPI",
-#             "origins CORS": [
-#                             "http://localhost.tiangolo.com",
-#                             "https://localhost.tiangolo.com",
-#                             "http://localhost",
-#                             "http://localhost:8081",
-#                             "http://localhost:8082",
-#                             "http://localhost:8081",
-#                             "https://payday-mintic.herokuapp.com/"
-#                             "https://payday-mintic.herokuapp.com/user/balance/uber"
-#                                 ]
-#     }
 
 @api.get("/")  # root
 async def get_root():
@@ -82,20 +53,20 @@ async def get_root():
 
 ## CREAMOS UN ENDPOINT CUYA FUNCIONALIDAD ES REGRESAR TODOS
 # LOS DATOS QUE ESTEN DENTRO DE LA BD DE INGRESOS
-@api.get("/ingresos/")
+@api.get("/movimientos/")
 async def get_all_ingresos():
-    return getAllIngresos()   ## UN METODO DE LA CLASE INGRESO
+    return getAllMovimientos()   ## UN METODO DE LA CLASE INGRESO
 
 
 ## Simulacion
-#  http://127.0.0.1:11111/ingreso/1
+#  http://127.0.0.1:11111/movimiento/1
                     #  1
-@api.get("/ingreso/{usuario}")
+@api.get("/movimiento/{usuario}")
 async def get_ingreso(usuario: str):
 
     usuario = usuario.lower()
 
-    ingreso_in_db = getIngreso(usuario)
+    ingreso_in_db = getMovimiento(usuario)
     print("ingreso_in_db")
     print(ingreso_in_db)
 
@@ -105,19 +76,18 @@ async def get_ingreso(usuario: str):
     return  ingreso_in_db
 
 
+@api.post("/movimiento/{usuario}")
 
-@api.post("/ingreso/{usuario}")
-
-async def create_ingreso(usuario: str, ingreso_in: IngresoIn):
+async def create_ingreso(usuario: str, ingreso_in: MovimientoIn):
 
     usuario = usuario.lower()
 
-    ingreso_in_db = getIngreso(usuario)
+    ingreso_in_db = getMovimiento(usuario)
 
     if ingreso_in_db == None:
         raise HTTPException(status_code=404, detail=USUARIONOFOUND)
 
-    newIngreso = createIngreso(usuario, ingreso_in)  # METODO DE LA CLASE INGRESO
+    newIngreso = createMovimiento(usuario, ingreso_in)  # METODO DE LA CLASE INGRESO
 
     if newIngreso == None:
         raise HTTPException(status_code=400, detail=INGRESONOTCREATED)
@@ -125,17 +95,17 @@ async def create_ingreso(usuario: str, ingreso_in: IngresoIn):
     return  {"message": "Ingreso registrado"}
 
 
-@api.put("/ingreso/{usuario}/{id_ingreso}")
-async def update_ingreso(usuario:str, id_ingreso: int, ingreso_in: IngresoIn):
+@api.put("/movimiento/{usuario}/{id_ingreso}")
+async def update_ingreso(usuario:str, id_ingreso: int, ingreso_in: MovimientoIn):
 
     usuario = usuario.lower()
     
-    ingreso_in_db = getIngreso(usuario)
+    ingreso_in_db = getMovimiento(usuario)
 
     if ingreso_in_db == None:
         raise HTTPException(status_code=404, detail=USUARIONOFOUND)
 
-    ingresoUpdated = updateIngreso(usuario, id_ingreso, ingreso_in)
+    ingresoUpdated = updateMovimiento(usuario, id_ingreso, ingreso_in)
 
     if ingresoUpdated == None:
         raise HTTPException(status_code=404, detail=INGRESONOFOUND)
@@ -146,25 +116,25 @@ async def update_ingreso(usuario:str, id_ingreso: int, ingreso_in: IngresoIn):
     ingresoUpdated.valor = ingreso_in.valor
     ingresoUpdated.fecha = ingreso_in.fecha
     ingresoUpdated.origen = ingreso_in.origen
-    ingresoUpdated.tipoIngreso = ingreso_in.tipoIngreso
+    ingresoUpdated.tipo_movimiento = ingreso_in.tipo_movimiento
 
 
     return  {"Actualizado": True, "Ingreso": ingresoUpdated}
 
 
 
-@api.delete("/ingreso/{usuario}/{id_ingreso}")
+@api.delete("/movimiento/{usuario}/{id_ingreso}")
 async def delete_ingreso(usuario:str , id_ingreso: int):
 
     usuario = usuario.lower()
 
-    ingreso_in_db = getIngreso(usuario)
+    ingreso_in_db = getMovimiento(usuario)
 
     if ingreso_in_db == None:
         raise HTTPException(status_code=404, detail=USUARIONOFOUND)
     
 
-    bd =  deleteIngreso(usuario, id_ingreso)
+    bd =  deleteMovimiento(usuario, id_ingreso)
 
     if bd == None:
         raise HTTPException(status_code=404, detail=INGRESONOFOUND)

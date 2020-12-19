@@ -1,15 +1,15 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class IngresoIn(BaseModel):  # CREAR UNA INTERFAZ
-    id_ingreso: int
+class MovimientoIn(BaseModel):  # CREAR UNA INTERFAZ
+    id_movimiento: int
     descripcion: str
     valor: float
     fecha: datetime = datetime.now()
     origen: str
-    tipoIngreso: str
+    tipo_movimiento: str
 
-class IngresoOut(BaseModel):
+class MovimientoOut(BaseModel):
     descripcion: str
     fecha: datetime = datetime.now()
     valor: float
