@@ -76,6 +76,36 @@ async def get_ingreso(usuario: str):
     return  ingreso_in_db
 
 
+@api.get("/dashboard/{usuario}")
+async def get_ingreso(usuario: str):
+
+    usuario = usuario.lower()
+
+    ingreso_in_db = getMovimiento(usuario)
+    print("ingreso_in_db")
+    print(ingreso_in_db)
+
+    if ingreso_in_db == None:
+        raise HTTPException(status_code=404, detail=USUARIONOFOUND)
+
+    ingreso = 0
+    egreso = 0
+    total = 0
+
+    for data in ingreso_in_db:
+        print("\n", data.tipo_movimiento, "\n")
+        if( data.tipo_movimiento == 'Ingreso'):
+            ingreso += data.valor
+        elif(data.tipo_movimiento == 'Egreso'):
+            egreso += data.valor
+
+        total = ingreso - egreso
+
+
+
+    return  { "ingreso": ingreso , "egreso": egreso, "total": total}
+
+
 @api.post("/movimiento/{usuario}")
 
 async def create_ingreso(usuario: str, ingreso_in: MovimientoIn):
