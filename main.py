@@ -40,7 +40,7 @@ async def get_root():
                              "Uberney Martinez",
                              "Leonardo Novoa",
                              "Camilo Papitño",
-                             "Carlos Paternina
+                             "Carlos Paternina"
                             ],
             "origins CORS": [
                             "http://payday-mintic.herokuapp.com"
