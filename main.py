@@ -37,7 +37,7 @@ async def get_root():
             "message": "Conectado a FastAPI",
             "grupo": "G3M4_1",
             "integrantes": [ "Laura Perdomo",
-                             "Uberney Martinez",
+                             "Uberney Ramírez",
                              "Leonardo Novoa",
                              "Camilo Patiño",
                              "Carlos Paternina"
