@@ -35,8 +35,15 @@ api.add_middleware(
 async def get_root():
     return {"resp" : "Ok",
             "message": "Conectado a FastAPI",
+            "grupo": "G3M4_1",
+            "integrantes": [ "Laura Perdomo",
+                             "Uberney Martinez",
+                             "Leonardo Novoa",
+                             "Camilo Papitño",
+                             "Carlos Paternina
+                            ],
             "origins CORS": [
-                            "https://payday-mintic.herokuapp.com"
+                            "http://payday-mintic.herokuapp.com"
                                 ]
     }
 
