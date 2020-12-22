@@ -10,7 +10,9 @@ INGRESONOTCREATED = "No se pudo crear el ingreso"
 
 
 origins = [
-    "https://payday-mintic.herokuapp.com"
+    "https://payday-mintic.herokuapp.com",
+    "http://payday-mintic.herokuapp.com"
+    
 ]
 
 
