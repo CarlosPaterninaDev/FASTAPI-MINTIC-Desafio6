@@ -39,7 +39,7 @@ async def get_root():
             "integrantes": [ "Laura Perdomo",
                              "Uberney Martinez",
                              "Leonardo Novoa",
-                             "Camilo Papitño",
+                             "Camilo Patiño",
                              "Carlos Paternina"
                             ],
             "origins CORS": [
